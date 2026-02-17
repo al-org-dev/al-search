@@ -69,4 +69,13 @@ class AlSearchAssetsTagTest < Minitest::Test
     assert_includes names, 'shortcut-key.js'
     assert_includes names, 'ninja-keys.min.js'
   end
+
+  def test_search_setup_uses_vanilla_nav_closure
+    setup_script = File.read(File.expand_path('../lib/assets/al_search/js/search-setup.js', __dir__))
+
+    refute_includes setup_script, '$("#navbarNav")'
+    refute_includes setup_script, '.collapse("hide")'
+    assert_includes setup_script, 'window.openSearchModal = openSearchModal'
+    assert_includes setup_script, 'data-nav-toggle="navbarNav"'
+  end
 end
