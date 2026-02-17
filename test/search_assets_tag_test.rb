@@ -77,5 +77,7 @@ class AlSearchAssetsTagTest < Minitest::Test
     refute_includes setup_script, '.collapse("hide")'
     assert_includes setup_script, 'window.openSearchModal = openSearchModal'
     assert_includes setup_script, 'data-nav-toggle="navbarNav"'
+    assert_includes setup_script, 'document.getElementById("search-toggle")'
+    assert_includes setup_script, 'event.preventDefault()'
   end
 end
