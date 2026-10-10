@@ -77,6 +77,25 @@ class AlSearchAssetsTagTest < Minitest::Test
     refute_includes output, 'permalink'
   end
 
+  def test_home_nav_entry_falls_back_when_root_page_title_is_blank
+    # Sites can leave the about page's title empty to keep it out of the navbar;
+    # the search entry still needs a label, and slugifying "" makes Jekyll warn
+    # "Empty `slug` generated" on every rendered page.
+    [nil, '', '   '].each do |title|
+      payload = minimal_payload
+      payload['site']['pages'] = [{ 'permalink' => '/', 'title' => title }]
+
+      output, = render_assets(
+        config: { 'search_enabled' => true, 'baseurl' => '' },
+        payload: payload
+      )
+
+      assert_includes output, 'id: "nav-about"', "title: #{title.inspect}"
+      assert_includes output, 'title: "about"', "title: #{title.inspect}"
+      refute_includes output, 'id: "nav-"', "title: #{title.inspect}"
+    end
+  end
+
   def test_returns_empty_when_search_disabled
     output, = render_assets(
       config: { 'search_enabled' => false, 'baseurl' => '/base' },

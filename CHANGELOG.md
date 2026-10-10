@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- The home navigation entry in the generated search data now falls back to `about` when the page at permalink `/` has a blank title, instead of emitting an empty entry and an "Empty `slug` generated" warning on every page.
+- Added regression coverage for nil, empty and whitespace-only home page titles.
+
 ## 1.0.3 - 2026-07-27
 
 - Replaced the full `site.pages` scan used to find the home page title with a single `where`/`map`/`first` filter chain in the generated search data.
